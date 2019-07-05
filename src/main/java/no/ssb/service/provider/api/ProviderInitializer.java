@@ -1,7 +1,6 @@
 package no.ssb.service.provider.api;
 
-import no.ssb.config.DynamicConfiguration;
-
+import java.util.Map;
 import java.util.Set;
 
 public interface ProviderInitializer<T> {
@@ -10,6 +9,6 @@ public interface ProviderInitializer<T> {
 
     Set<String> configurationKeys();
 
-    T initialize(DynamicConfiguration configuration);
+    T initialize(Map<String, String> configuration);
 
 }

@@ -1,9 +1,5 @@
 package no.ssb.service.provider.api;
 
-import no.ssb.config.DynamicConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,10 +10,7 @@ import java.util.stream.Collectors;
 
 public class ProviderConfigurator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProviderConfigurator.class);
-
-    public static <R, T extends ProviderInitializer> R configure(DynamicConfiguration configuration, String providerId, Class<T> clazz) {
-        LOG.info("{} Provider: {}", clazz.getSimpleName(), providerId);
+    public static <R, T extends ProviderInitializer> R configure(Map<String, String> configuration, String providerId, Class<T> clazz) {
 
         ServiceLoader<T> loader = ServiceLoader.load(clazz);
         List<ServiceLoader.Provider<T>> providers = loader.stream()
@@ -43,7 +36,7 @@ public class ProviderConfigurator {
         Set<String> configurationKeys = initializer.configurationKeys();
         Set<String> missingConfigurationKeys = new LinkedHashSet<>();
         for (String key : configurationKeys) {
-            if (configuration.evaluateToString(key) == null) {
+            if (configuration.get(key) == null) {
                 missingConfigurationKeys.add(key);
             }
         }
@@ -53,7 +46,7 @@ public class ProviderConfigurator {
 
         Map<String, String> configurationByKey = new LinkedHashMap<>();
         for (String key : configurationKeys) {
-            String value = configuration.evaluateToString(key);
+            String value = configuration.get(key);
             if (value != null) {
                 configurationByKey.put(key, value);
             }
