@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class ProviderConfigurator {
 
     public static <R, T extends ProviderInitializer> R configure(Map<String, String> configuration, String providerId, Class<T> clazz) {
-
+        ProviderConfigurator.class.getModule().addUses(clazz);
         ServiceLoader<T> loader = ServiceLoader.load(clazz);
         List<ServiceLoader.Provider<T>> providers = loader.stream()
                 .filter(p -> {
