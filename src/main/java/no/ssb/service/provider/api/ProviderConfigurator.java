@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class ProviderConfigurator {
 
-    public static <R, T extends ProviderInitializer> R configure(Map<String, String> configuration, String providerId, Class<T> clazz) {
+    public static <R, T extends ProviderInitializer<R>> R configure(Map<String, String> configuration, String providerId, Class<T> clazz) {
         ProviderConfigurator.class.getModule().addUses(clazz);
         ServiceLoader<T> loader = ServiceLoader.load(clazz);
         List<ServiceLoader.Provider<T>> providers = loader.stream()
@@ -52,8 +52,8 @@ public class ProviderConfigurator {
             }
         }
 
-        Object provider = initializer.initialize(configuration);
+        R provider = initializer.initialize(configuration);
 
-        return (R) provider;
+        return provider;
     }
 }
