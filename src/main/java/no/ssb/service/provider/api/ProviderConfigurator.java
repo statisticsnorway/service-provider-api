@@ -27,10 +27,10 @@ public class ProviderConfigurator {
             throw new RuntimeException("More than one " + clazz.getSimpleName() + " provider found for providerId: " + providerId);
         }
 
-        T initializer = providers.get(0).get(); // instantiate persistence-initializer through provider
+        T initializer = providers.get(0).get(); // instantiate initializer through provider
 
         if (!providerId.equals(initializer.providerId())) {
-            throw new RuntimeException("Annotated providerId of " + clazz.getSimpleName() + " module does not match with the provider-id returned from the initializer instance method");
+            throw new RuntimeException("Annotated providerId of " + clazz.getSimpleName() + " module does not match with the provider-id returned from the initializer instance method: " + initializer.providerId());
         }
 
         Set<String> configurationKeys = initializer.configurationKeys();
