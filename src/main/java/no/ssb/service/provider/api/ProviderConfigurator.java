@@ -4,11 +4,28 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class ProviderConfigurator {
+
+    public static <R, T extends ProviderInitializer<R>> R configure(String prefix, Map<String, String> configuration, String providerId, Class<T> clazz) {
+        return configure(extractConfiguration(prefix, configuration), providerId, clazz);
+    }
+
+    static Map<String, String> extractConfiguration(String prefix, Map<String, String> configuration) {
+        NavigableMap<String, String> navConf;
+        if (configuration instanceof NavigableMap) {
+            navConf = (NavigableMap) configuration;
+        } else {
+            navConf = new TreeMap<>(configuration);
+        }
+        return navConf.subMap(prefix, true, prefix + "\uFFFF", false)
+                .entrySet().stream().collect(Collectors.toMap(e -> e.getKey().substring(prefix.length()), e -> e.getValue()));
+    }
 
     public static <R, T extends ProviderInitializer<R>> R configure(Map<String, String> configuration, String providerId, Class<T> clazz) {
         ProviderConfigurator.class.getModule().addUses(clazz);
