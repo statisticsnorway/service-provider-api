@@ -4,7 +4,7 @@
 
     <groupId>no.ssb.spi</groupId>
     <artifactId>service-provider-api</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <packaging>jar</packaging>
 
     <name>Service Loader API</name>
@@ -48,7 +48,7 @@
         <connection>scm:git:git://github.com/statisticsnorway/service-provider-api.git</connection>
         <developerConnection>scm:git:git@github.com:statisticsnorway/service-provider-api.git</developerConnection>
         <url>https://github.com/statisticsnorway/service-provider-api/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>service-provider-api-0.4</tag>
     </scm>
 
     <distributionManagement>
